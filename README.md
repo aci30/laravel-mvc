@@ -14,12 +14,19 @@ Laravel MVC приложение с CRUD операциями и REST API.
 
 ## Установка
 
-Install [Composer](getcomposer.org/download/)
+Install [Composer](https://getcomposer.org/download/)
 ```sh
 git clone https://github.com/aci30/laravel-mvc.git
 cd laravel-mvc
 composer install
 ```
+If composer install fails
+> sudo apt install php-xml
+> 
+> sudo apt install php-mbstring
+
+***
+
 Copy `.env` and generate key
 ```sh
 cp .env.example .env
@@ -37,10 +44,18 @@ Prepare database file
 ```sh
 touch database/database.sqlite
 ```
+
+***
+
 Migrate and seed database
 ```sh
 php artisan migrate --seed
 ```
+If migration fails
+> sudo apt-get install php-sqlite3
+
+***
+
 And finally start
 ```sh
 php artisan serve
