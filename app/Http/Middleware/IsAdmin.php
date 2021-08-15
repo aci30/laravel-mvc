@@ -17,7 +17,13 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user() &&  Auth::user()->name === 'admin') {
+        // web admin
+        if (Auth::user() && Auth::user()->name === 'admin'){
+            return $next($request);
+        }
+
+        // api admin
+        if (Auth::user()->currentAccessToken() && Auth::user()->currentAccessToken()->name === 'admin_token'){
             return $next($request);
         }
     

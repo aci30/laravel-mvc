@@ -20,19 +20,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::prefix('v1')->name('api.')->group(function () {
 
     //Needs authentication
-    Route::middleware(['auth:sanctum'])->group(function () {
-        Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+    Route::post('/logout', [UserController::class, 'logout'])
+        ->name('logout')
+        ->middleware(['auth:sanctum']);
 
+    //Needs admin rights
+    Route::middleware(['auth:sanctum', 'admin'])->group(function () {
         Route::apiResource('books', BookController::class)->parameters([
             'books' => 'id',
         ])->only([
             'update',
             'destroy',
-            'store'
+            'store',
         ]);
     });
 
@@ -41,7 +43,7 @@ Route::prefix('v1')->name('api.')->group(function () {
     Route::apiResource('books', BookController::class)->parameters([
         'books' => 'id',
     ])->only([
-        'index',
         'show',
+        'index',
     ]);  
 });

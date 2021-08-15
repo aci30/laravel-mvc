@@ -17,13 +17,18 @@ class UserController extends Controller
        
         $user = User::where('name', $request->username)->first();
 
-        if (!Hash::check($request->password, $user->password)){
+        if (!$user || !Hash::check($request->password, $user->password)){
             return response([
                 'message' => 'Wrong password',
             ], 401);
         }
 
-        $token = $user->createToken('token');
+        // Issue admin special token
+        if ($user->name === 'admin'){
+            $token = $user->createToken('admin_token');
+        } else {
+            $token = $user->createToken('user_token');
+        }
         
         return response([
             'user' => $user,
